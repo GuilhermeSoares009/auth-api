@@ -22,24 +22,25 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
+
     @Autowired
     private UserRepository repository;
+
     @Autowired
     private TokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data){
+    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
-
         var token = tokenService.generateToken((User) auth.getPrincipal());
-
+        System.out.println("login e token" + token);
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
-        if(this.repository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
+        if (this.repository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         User newUser = new User(data.login(), encryptedPassword, data.role());
@@ -47,5 +48,6 @@ public class AuthenticationController {
         this.repository.save(newUser);
 
         return ResponseEntity.ok().build();
+
     }
 }

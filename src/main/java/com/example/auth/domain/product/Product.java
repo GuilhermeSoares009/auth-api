@@ -6,8 +6,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.math.BigInteger;
-
 @Table(name = "product")
 @Entity(name = "product")
 @Getter

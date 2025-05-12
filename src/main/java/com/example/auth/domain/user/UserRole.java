@@ -1,6 +1,7 @@
 package com.example.auth.domain.user;
 
 public enum UserRole {
+
     ADMIN("admin"),
     USER("user");
 
@@ -13,4 +14,5 @@ public enum UserRole {
     public String getRole(){
         return role;
     }
+
 }
