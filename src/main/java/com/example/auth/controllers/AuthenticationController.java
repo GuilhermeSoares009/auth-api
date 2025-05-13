@@ -32,16 +32,20 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
+        System.out.println("passou");
         var auth = this.authenticationManager.authenticate(usernamePassword);
-        var token = tokenService.generateToken((User) auth.getPrincipal());
-        System.out.println("login e token" + token);
+        System.out.println("passou2");
+        var token = tokenService.generateToken((User) auth.getPrincipal());;
+        System.out.println("passou3");
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
-        if (this.repository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
-
+        if (this.repository.findByLogin(data.login()) != null) {
+            System.out.println("Login já existente: " + data.login());
+            return ResponseEntity.badRequest().body("Login já está em uso.");
+        }
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         User newUser = new User(data.login(), encryptedPassword, data.role());
 

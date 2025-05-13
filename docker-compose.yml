@@ -23,6 +23,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/authdb
       SPRING_DATASOURCE_USERNAME: auth_user
       SPRING_DATASOURCE_PASSWORD: auth_pass
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB: DEBUG
     ports:
       - "8080:8080"
     depends_on:
